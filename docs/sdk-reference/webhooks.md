@@ -1,9 +1,10 @@
 ---
 sidebar_position: 4
+sidebar_label: Webhook endpoints
 description: Register and manage webhook endpoints through the Harbor SDK.
 ---
 
-# Webhooks
+# Webhook endpoints
 
 The SDK exposes webhook endpoint management under `harbor.webhooks`. Delivery handling happens on your HTTP server; see [Webhook delivery](../concepts/webhook-delivery) for payload shape and retry semantics.
 
@@ -13,7 +14,7 @@ The SDK exposes webhook endpoint management under `harbor.webhooks`. Delivery ha
 harbor.webhooks.create({
   workspaceId: 'ws_018f3a2e4b9c',
   url: 'https://api.example.com/harbor/webhooks',
-  events: ['invoice.paid', 'user.invited'],
+  events: ['order.shipped', 'invoice.paid'],
 });
 ```
 
@@ -58,6 +59,4 @@ harbor.webhooks.list({
 
 ## Next steps
 
-- [Webhooks guide](../guides/webhooks) for registration and signature verification
-- [Webhook delivery](../concepts/webhook-delivery) for retry and deduplication patterns
-- [REST API overview](../rest-api/overview) for raw HTTP equivalents
+See [Webhooks guide](../guides/webhooks) for registration and verification. `verifyWebhookSignature()` params in [Client](./client#verifywebhooksignature).

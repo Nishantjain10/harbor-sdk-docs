@@ -38,7 +38,7 @@ harbor.events.list({ ... });
 harbor.webhooks.create({ ... });
 ```
 
-See [Events](./events), [Workspaces](./workspaces), and [Webhooks](./webhooks) for per-resource details.
+See [Events](./events), [Workspaces](./workspaces), and [Webhook endpoints](./webhooks) for per-resource details.
 
 ## Errors
 
@@ -73,8 +73,30 @@ const harbor = new Harbor({
 
 Log lines include `requestId` for correlation with Harbor support.
 
+## verifyWebhookSignature
+
+Validates an inbound webhook delivery using the endpoint secret from `harbor.webhooks.create()`. Import it separately from the client class:
+
+```typescript
+import { verifyWebhookSignature } from '@harbor/sdk';
+
+const valid = verifyWebhookSignature({
+  payload: rawBody,       // raw request body string
+  signature,                // Harbor-Signature header
+  timestamp,                // Harbor-Timestamp header
+  secret: endpointSecret,   // endpoint secret, not your API key
+});
+```
+
+| Parameter | Description |
+| --------- | ----------- |
+| `payload` | Raw request body (before JSON parsing) |
+| `signature` | Value of the `Harbor-Signature` header |
+| `timestamp` | Value of the `Harbor-Timestamp` header |
+| `secret` | Endpoint signing secret |
+
+Returns `true` when the signature is valid and the timestamp is within five minutes. See [Webhooks guide](../guides/webhooks) for a full handler example.
+
 ## Next steps
 
-- [Managing API keys](../guides/managing-api-keys) for credential setup
-- [Events](./events) and [Workspaces](./workspaces) method reference
-- [Quickstart](../getting-started/quickstart) for a minimal working example
+See [Events](./events) method reference. Credential setup in [Managing API keys](../guides/managing-api-keys).

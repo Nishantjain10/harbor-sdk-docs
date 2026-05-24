@@ -54,6 +54,4 @@ If you receive `resource_not_found` for a valid-looking ID, confirm the key belo
 
 ## Next steps
 
-- [Quickstart](../getting-started/quickstart) uses a workspace ID in the first list call
-- [Managing API keys](../guides/managing-api-keys) scoped to a workspace's resources
-- [Common errors](../troubleshooting/common-errors) for invalid workspace IDs
+See [Quickstart](../getting-started/quickstart) for how workspace IDs are used in a first integration. Invalid IDs in [Common errors](../troubleshooting/common-errors).

@@ -6,7 +6,7 @@ description: Harbor SDK documentation for workspaces, events, webhooks, and API 
 
 # Harbor SDK
 
-Harbor is a developer platform for **workspaces**, **events**, and **outbound webhooks**. You emit events from your backend, Harbor persists them, and subscribed HTTPS endpoints receive signed deliveries.
+Harbor is an **event routing platform** for **workspaces**, **events**, and **outbound webhooks**. You emit events from your backend, Harbor persists them, and subscribed HTTPS endpoints receive signed deliveries.
 
 The `@harbor/sdk` package wraps the REST API for Node.js with typed clients, cursor pagination, and retry handling.
 
@@ -15,7 +15,7 @@ The `@harbor/sdk` package wraps the REST API for Node.js with typed clients, cur
 | Resource | Purpose |
 | -------- | ------- |
 | **Workspaces** | Isolation boundary for events, webhooks, and API keys |
-| **Events** | Immutable records of activity (for example, `invoice.paid`) |
+| **Events** | Immutable records of activity (for example, `order.shipped`) |
 | **Webhooks** | HTTPS endpoints Harbor calls when matching events occur |
 | **API keys** | Secret or restricted credentials for server-side access |
 
@@ -64,13 +64,9 @@ REST conventions are documented in [REST API overview](./rest-api/overview).
 
 | Goal | Start here |
 | ---- | ---------- |
-| Install and first request | [Installation](./getting-started/installation) → [Quickstart](./getting-started/quickstart) |
+| Install and first event | [Installation](./getting-started/installation) → [Quickstart](./getting-started/quickstart) |
 | Understand events | [Event lifecycle](./concepts/event-lifecycle) |
 | Receive notifications | [Webhooks guide](./guides/webhooks) |
 | Production credentials | [Managing API keys](./guides/managing-api-keys) |
 | Upgrade from SDK v1 | [Migrating from v1.0](./getting-started/migrating-from-1-0) |
 | Debug failures | [Common errors](./troubleshooting/common-errors) |
-
-## Next steps
-
-New to Harbor? Follow [Installation](./getting-started/installation), then [Quickstart](./getting-started/quickstart). Before production, read [Managing API keys](./guides/managing-api-keys) and [Webhook delivery](./concepts/webhook-delivery).
