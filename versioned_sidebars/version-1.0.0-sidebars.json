@@ -1,0 +1,20 @@
+{
+  "docsSidebar": [
+    "intro",
+    {
+      "type": "category",
+      "label": "Get started",
+      "collapsed": false,
+      "link": {
+        "type": "generated-index",
+        "title": "Get started",
+        "description": "Install the Harbor SDK and make your first API call.",
+        "slug": "/get-started"
+      },
+      "items": [
+        "getting-started/installation",
+        "getting-started/quickstart"
+      ]
+    }
+  ]
+}

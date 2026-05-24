@@ -39,6 +39,12 @@ const config: Config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: 'Next (Unreleased)',
+            },
+          },
         },
         blog: false,
         theme: {
@@ -52,6 +58,10 @@ const config: Config = {
     navbar: {
       title: 'Harbor Docs',
       items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+        },
         {
           href: `https://github.com/${organizationName}/${projectName}`,
           position: 'right',
