@@ -1,6 +1,8 @@
 # Harbor Docs
 
-Documentation site for **Harbor**, a fictional event routing platform. Harbor covers workspaces, events, outbound webhooks, and API keys. The site uses Docusaurus v3 with versioned docs, native MDX (tabs, admonitions, Mermaid), and a small CI pipeline deployed to Vercel.
+Developer documentation for **Harbor**, a fictional event routing platform. Harbor covers workspaces, events, outbound webhooks, and API keys. The site is a Docusaurus v3 project with versioned docs, a small CI pipeline, and deployment on Vercel.
+
+Harbor is not a real product. The content is realistic enough to show how I would structure and maintain SDK documentation.
 
 ## Local setup
 
@@ -9,72 +11,42 @@ Requires Node.js 20 (`nvm use` reads `.nvmrc`).
 ```bash
 pnpm install
 pnpm start    # dev server at http://localhost:3000
-pnpm build    # production build; catches broken links
-pnpm check    # markdownlint + ESLint + build
+pnpm build    # production build
+pnpm check    # markdownlint + eslint + build
 ```
 
-## Documentation structure
+Run `pnpm check` before opening a PR. That is what CI runs.
 
-| Section | Purpose |
-| ------- | ------- |
-| **Overview** | Platform summary, architecture diagram, SDK vs REST |
-| **Get started** | Install, quickstart, v1 → v2 migration |
-| **Concepts** | Event lifecycle, webhook delivery (Mermaid diagrams) |
-| **Guides** | Task walkthroughs with TS/JS/cURL tabs |
-| **SDK reference** | Client, events, workspaces, webhooks |
-| **REST API** | HTTP conventions for non-Node integrations |
-| **Troubleshooting** | Error codes, rate limits, sample JSON responses |
+## What I built
 
-```
-docs/
-  intro.md
-  getting-started/
-  concepts/
-  guides/
-  sdk-reference/
-  rest-api/
-  troubleshooting/
-versioned_docs/version-1.0.0/   # frozen 1.0.0 snapshot
-```
+The docs follow a simple path: overview, get started, concepts, guides, SDK reference, REST API, and troubleshooting. I put concepts before guides on purpose. You need to understand how events and webhook delivery work before writing integration code.
 
-Content uses native Docusaurus only: category indexes, tabs, admonitions, Mermaid, collapsible `<details>`, and cross-links. No custom React components.
+Pages use native Docusaurus features only: tabs (TypeScript / JavaScript / cURL), admonitions, Mermaid diagrams, and cross-links. No custom React components. That keeps the repo easy to hand off to another docs contributor.
 
-## Versioning
-
-| Label | Source | What it includes |
-| ----- | ------ | ---------------- |
-| Next (Unreleased) | `docs/` | Full site including concepts, REST API, migration guide |
-| 1.0.0 | `versioned_docs/version-1.0.0/` | Intro and get-started only; JavaScript, no `--typescript` init |
-
-The [Migrating from v1.0](docs/getting-started/migrating-from-1-0.md) page documents differences between versions.
+Current docs live in `docs/` and show up as **Next (Unreleased)** in the navbar. A frozen **1.0.0** snapshot in `versioned_docs/` is intentionally smaller (intro and get-started only, older JavaScript SDK). The migration page explains what changed. I wanted versioning to feel real, not like a checkbox.
 
 ## Decisions
 
-**Information architecture** places concepts before guides so readers understand event immutability and at-least-once delivery before writing integration code.
+**Docusaurus v3** because versioning, MDX, and static output are already solved problems. Config is in TypeScript so mistakes show up at build time.
 
-**Dual access paths** (SDK + REST overview) reflect how real platforms serve Node.js teams and everyone else without duplicating every page.
+**pnpm** for faster installs and a strict lockfile in CI (`pnpm install --frozen-lockfile`).
 
-**Mermaid diagrams** on intro and concept pages explain flows that prose alone would bury.
+**SDK + REST docs** without duplicating everything. Node teams use the SDK. Everyone else needs HTTP patterns. Both paths are covered, but not twice.
 
-**CI** runs `pnpm check` on pull requests: markdownlint, ESLint on site config, production build with `onBrokenLinks: 'throw'`.
+**Broken links fail the build** (`onBrokenLinks: 'throw'`). For a docs repo, that is the most useful single check I could add.
 
-**Vercel** deploys from the connected GitHub repo.
+**One CI job** that runs `pnpm check`: markdownlint, ESLint on site config, then a full production build. Simple to run locally, simple to debug when it breaks.
 
-## Deployment
-
-- **Install command:** `pnpm install --frozen-lockfile`
-- **Build command:** `pnpm build`
-- **Output directory:** `build`
-
-Optional env vars: `DOCS_URL`, `ORGANIZATION_NAME`, `PROJECT_NAME`.
-
-## With more time
-
-- External link checking (lychee) on a nightly schedule
-- OpenAPI spec when the endpoint surface grows beyond a single overview page
-- Algolia DocSearch once page count justifies full-text search
+**Vercel** connected to GitHub. Push to `main`, site rebuilds. I skipped wiring deploy tokens into CI since Vercel handles that cleanly for this scope.
 
 ## Assumptions
 
-- Readers are backend developers integrating an event platform API
-- Harbor is fictional; examples show documentation patterns, not a live product
+I wrote for backend developers integrating an event platform API. English only, GitHub-based workflow, no auth or analytics on the docs site. Examples are illustrative, not tied to a live backend.
+
+## With more time
+
+External link checking (lychee), OpenAPI-generated API reference, Algolia search, Playwright smoke tests for the version dropdown, and per-PR preview deploys. I would also add Vale or a prose lint step if this were a team repo with a style guide.
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for where to edit files and what to run before a PR.

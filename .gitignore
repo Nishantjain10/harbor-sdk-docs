@@ -39,5 +39,8 @@ Thumbs.db
 *.temp
 .cache/
 
+# Local reference (not for public repo)
+FOLDER-STRUCTURE.md
+
 # Local interview / prep artifacts (sibling folder outside this repo)
 ../harbor-docs-internal/
