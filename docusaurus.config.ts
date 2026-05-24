@@ -18,6 +18,15 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
+  markdown: {
+    mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+  },
+
+  themes: ['@docusaurus/theme-mermaid'],
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -30,6 +39,12 @@ const config: Config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: 'Next (Unreleased)',
+            },
+          },
         },
         blog: false,
         theme: {
@@ -42,6 +57,18 @@ const config: Config = {
   themeConfig: {
     navbar: {
       title: 'Harbor Docs',
+      items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+        },
+        {
+          href: `https://github.com/${organizationName}/${projectName}`,
+          position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
+        },
+      ],
     },
     footer: {
       style: 'dark',
