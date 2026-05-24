@@ -18,6 +18,15 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
+  markdown: {
+    mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+  },
+
+  themes: ['@docusaurus/theme-mermaid'],
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -42,6 +51,14 @@ const config: Config = {
   themeConfig: {
     navbar: {
       title: 'Harbor Docs',
+      items: [
+        {
+          href: `https://github.com/${organizationName}/${projectName}`,
+          position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
+        },
+      ],
     },
     footer: {
       style: 'dark',
