@@ -10,8 +10,6 @@ const sidebars: SidebarsConfig = {
       link: {
         type: 'generated-index',
         title: 'Get started',
-        description:
-          'Install the Harbor SDK, configure credentials, and send your first API request.',
         slug: '/get-started',
       },
       items: [
@@ -27,7 +25,6 @@ const sidebars: SidebarsConfig = {
       link: {
         type: 'generated-index',
         title: 'Concepts',
-        description: 'How events and webhook deliveries work on Harbor.',
         slug: '/concepts',
       },
       items: [
@@ -38,18 +35,16 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Guides',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'generated-index',
         title: 'Guides',
-        description:
-          'Task-oriented walkthroughs for events, webhooks, credentials, and pagination.',
         slug: '/guides',
       },
       items: [
+        'guides/managing-api-keys',
         'guides/creating-events',
         'guides/webhooks',
-        'guides/managing-api-keys',
         'guides/pagination',
       ],
     },
@@ -60,7 +55,6 @@ const sidebars: SidebarsConfig = {
       link: {
         type: 'generated-index',
         title: 'SDK reference',
-        description: 'Client configuration and resource methods for Harbor SDK v2.',
         slug: '/sdk-reference',
       },
       items: [
@@ -77,7 +71,6 @@ const sidebars: SidebarsConfig = {
       link: {
         type: 'generated-index',
         title: 'REST API',
-        description: 'HTTP request patterns for the Harbor API.',
         slug: '/rest-api',
       },
       items: ['rest-api/overview'],
@@ -89,7 +82,6 @@ const sidebars: SidebarsConfig = {
       link: {
         type: 'generated-index',
         title: 'Troubleshooting',
-        description: 'Common errors, rate limits, and integration mistakes.',
         slug: '/troubleshooting',
       },
       items: [

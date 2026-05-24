@@ -59,6 +59,11 @@ const config: Config = {
       title: 'Harbor Docs',
       items: [
         {
+          to: '/guides',
+          label: 'Guides',
+          position: 'left',
+        },
+        {
           type: 'docsVersionDropdown',
           position: 'right',
         },
