@@ -34,16 +34,6 @@ npm install @harbor/sdk
 yarn add @harbor/sdk
 ```
 
-## Scaffold project files
-
-Generate a starter config file for a new integration:
-
-```bash
-npx @harbor/sdk init
-```
-
-This creates `harbor.config.js` with sandbox defaults and a sample `.env.example`.
-
 ## Verify the install
 
 Print the installed SDK version:
