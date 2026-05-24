@@ -1,13 +1,15 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 description: Register webhook endpoints and verify signed delivery payloads.
+pagination_prev: concepts/webhook-delivery
+pagination_next: guides/managing-api-keys
 ---
 
 # Webhooks
 
 Harbor delivers event notifications to HTTPS endpoints you register on a workspace. Each delivery includes a signed payload your server must verify before processing.
 
-You need a secret key with `webhooks:manage` to register endpoints. Store the endpoint `secret` for signature verification (not your API key).
+You need an API key with `webhooks:manage` to register endpoints. Store the endpoint `secret` for signature verification (not your API key).
 
 See [Webhook delivery](../concepts/webhook-delivery) for retry semantics and payload envelope format.
 
@@ -27,11 +29,11 @@ const harbor = new Harbor({ secretKey: process.env.HARBOR_SECRET_KEY });
 const endpoint = await harbor.webhooks.create({
   workspaceId: 'ws_018f3a2e4b9c',
   url: 'https://api.example.com/harbor/webhooks',
-  events: ['invoice.paid', 'user.invited'],
+  events: ['order.shipped', 'invoice.paid'],
 });
 
-console.log(endpoint.id);   // wh_0193f1a2d001
-console.log(endpoint.secret); // save to HARBOR_WEBHOOK_SECRET
+console.log(endpoint.id);     // wh_0193f1a2d001
+console.log(endpoint.secret);   // save securely — shown once at creation
 ```
 
   </TabItem>
@@ -45,22 +47,25 @@ const harbor = new Harbor({ secretKey: process.env.HARBOR_SECRET_KEY });
 const endpoint = await harbor.webhooks.create({
   workspaceId: 'ws_018f3a2e4b9c',
   url: 'https://api.example.com/harbor/webhooks',
-  events: ['invoice.paid', 'user.invited'],
+  events: ['order.shipped', 'invoice.paid'],
 });
+
+console.log(endpoint.id);     // wh_0193f1a2d001
+console.log(endpoint.secret);   // save securely — shown once at creation
 ```
 
   </TabItem>
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl https://api.harbor.dev/v1/webhooks \
+curl https://sandbox.api.harbor.dev/v1/webhooks \
   -X POST \
-  -H "Authorization: Bearer hb_live_xxxx" \
+  -H "Authorization: Bearer hb_test_xxxx" \
   -H "Content-Type: application/json" \
   -d '{
     "workspace_id": "ws_018f3a2e4b9c",
     "url": "https://api.example.com/harbor/webhooks",
-    "events": ["invoice.paid", "user.invited"]
+    "events": ["order.shipped", "invoice.paid"]
   }'
 ```
 
@@ -68,12 +73,19 @@ curl https://api.harbor.dev/v1/webhooks \
 </Tabs>
 
 :::warning
-The endpoint URL must be publicly reachable over HTTPS. Local development typically uses a tunnel (for example, ngrok) or the Harbor CLI forwarder.
+The endpoint URL must be publicly reachable over HTTPS. Local development typically uses a tunnel such as ngrok.
 :::
+
+## Test locally
+
+1. Start a tunnel: `ngrok http 3000`
+2. Register the HTTPS URL (for example, `https://abc123.ngrok.io/harbor/webhooks`) using [Register an endpoint](#register-an-endpoint).
+3. [Create a test event](./creating-events) that matches your subscription.
+4. Confirm a `2xx` response under **Webhooks → Deliveries** in the dashboard.
 
 ## Verify signatures
 
-Harbor sends `Harbor-Signature`, `Harbor-Timestamp`, and `Harbor-Delivery-Id` headers. Reject requests older than five minutes to limit replay attacks.
+Harbor sends `Harbor-Signature`, `Harbor-Timestamp`, and `Harbor-Delivery-Id` headers. `verifyWebhookSignature()` rejects timestamps older than five minutes to limit replay attacks.
 
 ```typescript
 import { verifyWebhookSignature } from '@harbor/sdk';
@@ -95,7 +107,12 @@ export async function POST(request: Request) {
   }
 
   const envelope = JSON.parse(body);
-  await queue.enqueue(envelope.data.id, envelope.data);
+
+  // Application code: defer processing (BullMQ, SQS, in-process worker, etc.)
+  setImmediate(() => {
+    processWebhookEvent(envelope.data);
+  });
+
   return new Response('ok', { status: 200 });
 }
 ```
@@ -104,7 +121,7 @@ Return `2xx` after the delivery is accepted for processing, not after all downst
 
 ## Handle duplicate deliveries
 
-Deliveries are at-least-once. The same `evt_01hzy9q7x8f4` may arrive twice after retries or manual replay. Deduplicate on `envelope.data.id` before side effects.
+Harbor delivers events at least once. Deduplicate on `envelope.data.id` before side effects. See [Webhook delivery § At-least-once semantics](../concepts/webhook-delivery#at-least-once-semantics).
 
 ## Delivery retries
 
@@ -115,7 +132,7 @@ Deliveries are at-least-once. The same `evt_01hzy9q7x8f4` may arrive twice after
 | 3 | 30 minutes |
 | 4+ | Up to 24 hours between attempts |
 
-Inspect attempts in the dashboard under **Webhooks → Deliveries**. Replay failed deliveries after fixing your handler.
+Harbor stops retrying after **72 hours** total. Inspect attempts in the dashboard under **Webhooks → Deliveries**. Replay failed deliveries after fixing your handler.
 
 ## Common mistakes
 
@@ -126,7 +143,4 @@ Inspect attempts in the dashboard under **Webhooks → Deliveries**. Replay fail
 
 ## Next steps
 
-- [Webhook delivery](../concepts/webhook-delivery) for payload schema and flow diagram
-- [Creating events](./creating-events) for the events that trigger deliveries
-- [Webhooks SDK reference](../sdk-reference/webhooks) for endpoint management methods
-- [Common errors](../troubleshooting/common-errors) for signature and timeout issues
+Review [Managing API keys](./managing-api-keys) before production. Endpoint methods in [Webhook endpoints (SDK reference)](../sdk-reference/webhooks).

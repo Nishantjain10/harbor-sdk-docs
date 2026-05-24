@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 description: How Harbor signs, delivers, and retries webhook notifications.
+pagination_prev: guides/creating-events
+pagination_next: guides/webhooks
 ---
 
 # Webhook delivery
@@ -22,7 +24,7 @@ flowchart LR
     I --> F
 ```
 
-Each delivery is independent. If you register three endpoints for `invoice.paid`, Harbor sends three requests.
+Each delivery is independent. If you register three endpoints for `order.shipped`, Harbor sends three requests.
 
 ## Delivery payload
 
@@ -34,12 +36,12 @@ Harbor wraps the event in an envelope:
   "type": "event.created",
   "created_at": "2026-05-25T12:00:01Z",
   "data": {
-    "id": "evt_01hzy9q7x8f4",
-    "type": "invoice.paid",
+    "id": "evt_02m4k9p1q7w3",
+    "type": "order.shipped",
     "workspace_id": "ws_018f3a2e4b9c",
     "payload": {
-      "invoice_id": "inv_0192ac4e8b1d",
-      "amount_cents": 4200
+      "order_id": "ord_0192be7a3c4f",
+      "carrier": "ups"
     },
     "created_at": "2026-05-25T12:00:00Z"
   }
@@ -56,11 +58,11 @@ Use `data.id` for deduplication. The delivery ID (`del_` prefix) identifies a sp
 | `Harbor-Timestamp` | Unix timestamp when Harbor signed the payload |
 | `Harbor-Delivery-Id` | Unique ID for this delivery attempt |
 
-Verify signatures before parsing JSON. Full handler example in [Webhooks](../guides/webhooks).
+Verify signatures before parsing JSON. `verifyWebhookSignature()` rejects timestamps older than five minutes. Full handler example in [Webhooks guide](../guides/webhooks).
 
 ## Retries and timeouts
 
-Harbor waits up to 10 seconds for a response. Non-`2xx` status codes and connection failures trigger retries with exponential backoff for up to 72 hours.
+Harbor waits up to 10 seconds for a response. Non-`2xx` status codes and connection failures trigger retries with exponential backoff. See the retry schedule in [Webhooks guide § Delivery retries](../guides/webhooks#delivery-retries). Retries stop after **72 hours** total.
 
 Your endpoint must be idempotent: the same event may arrive more than once after retries or manual replay.
 
@@ -79,6 +81,4 @@ async function handleDelivery(envelope: DeliveryEnvelope) {
 
 ## Next steps
 
-- [Webhooks](../guides/webhooks) to register endpoints and verify signatures
-- [Event lifecycle](./event-lifecycle) for how events enter the pipeline
-- [Common errors](../troubleshooting/common-errors) when verification fails
+Continue to [Webhooks guide](../guides/webhooks). Verification issues in [Common errors](../troubleshooting/common-errors).

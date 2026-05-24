@@ -1,11 +1,13 @@
 ---
-sidebar_position: 3
+sidebar_position: 1
 description: Create, scope, rotate, and revoke Harbor API keys.
 ---
 
 # Managing API keys
 
-Harbor uses secret API keys for server-side access. Keys are prefixed by environment and can be unrestricted or limited to specific scopes.
+Harbor uses API keys for server-side access. Keys are prefixed by environment and can be unrestricted or limited to specific scopes.
+
+Harbor API keys are secret credentials passed as `secretKey` in the SDK or `Authorization: Bearer` in REST calls.
 
 ## Key types
 
@@ -17,7 +19,7 @@ Harbor uses secret API keys for server-side access. Keys are prefixed by environ
 
 Create and revoke keys in the Harbor dashboard under **Settings → API keys**.
 
-## Authenticate with a secret key
+## Authenticate with an API key
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -48,8 +50,8 @@ const harbor = new Harbor({
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl https://api.harbor.dev/v1/workspaces/ws_018f3a2e4b9c \
-  -H "Authorization: Bearer hb_live_xxxx"
+curl https://sandbox.api.harbor.dev/v1/workspaces/ws_018f3a2e4b9c \
+  -H "Authorization: Bearer hb_test_xxxx"
 ```
 
   </TabItem>
@@ -83,7 +85,7 @@ Rotate keys on a schedule or immediately after suspected exposure:
 3. Redeploy or reload configuration.
 4. Revoke the old key after traffic moves over.
 
-Harbor allows a short overlap window so you can roll out without downtime.
+Both keys remain valid until you revoke the old one, so you can roll out without downtime.
 
 ## Separate keys by service
 
@@ -101,13 +103,12 @@ Split credentials so a compromised read worker cannot register webhooks:
 | Variable | Purpose |
 | -------- | ------- |
 | `HARBOR_SECRET_KEY` | Server-side API authentication |
-| `HARBOR_WEBHOOK_SECRET` | Webhook signature verification (per endpoint) |
+| `HARBOR_WEBHOOK_SECRET` | Signing secret for **one** webhook endpoint |
+
+If you run multiple handlers, store each endpoint secret separately (for example, `HARBOR_WEBHOOK_SECRET_STAGING` and `HARBOR_WEBHOOK_SECRET_PROD`).
 
 Keep secrets out of git. Use your platform's secret manager in staging and production.
 
 ## Next steps
 
-- [REST API overview](../rest-api/overview) for Bearer token format
-- [Client reference](../sdk-reference/client) for constructor options
-- [Creating events](./creating-events) for scope requirements on write paths
-- [Rate limits](../troubleshooting/rate-limits) when keys share a workspace quota
+See [Creating events](./creating-events) for scope requirements on write paths. Bearer token format in [REST API overview](../rest-api/overview).
