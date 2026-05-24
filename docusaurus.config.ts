@@ -1,0 +1,57 @@
+import {themes as prismThemes} from 'prism-react-renderer';
+import type {Config} from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+
+const organizationName = process.env.ORGANIZATION_NAME ?? 'your-org';
+const projectName = process.env.PROJECT_NAME ?? 'harbor-sdk-docs';
+const docsUrl = process.env.DOCS_URL ?? 'https://harbor-docs.vercel.app';
+
+const config: Config = {
+  title: 'Harbor',
+  tagline: 'Server-side SDK for the Harbor platform API',
+
+  url: docsUrl,
+  baseUrl: '/',
+
+  organizationName,
+  projectName,
+
+  onBrokenLinks: 'throw',
+
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
+  presets: [
+    [
+      'classic',
+      {
+        docs: {
+          routeBasePath: '/',
+          sidebarPath: './sidebars.ts',
+        },
+        blog: false,
+        theme: {
+          customCss: './src/css/custom.css',
+        },
+      } satisfies Preset.Options,
+    ],
+  ],
+
+  themeConfig: {
+    navbar: {
+      title: 'Harbor Docs',
+    },
+    footer: {
+      style: 'dark',
+      copyright: `Copyright © ${new Date().getFullYear()} Harbor. Built with Docusaurus.`,
+    },
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
+    },
+  } satisfies Preset.ThemeConfig,
+};
+
+export default config;
