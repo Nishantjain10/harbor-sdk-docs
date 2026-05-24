@@ -7,6 +7,8 @@ description: Harbor API error codes, sample responses, and fixes.
 
 Harbor returns structured errors with a stable `code` field. The SDK surfaces them as `HarborError` instances. Include `error.requestId` (or `request_id` in JSON) when contacting support.
 
+**Start here:** confirm your key matches the environment (`hb_test_` → sandbox), the key has the required scope, and the workspace ID belongs to your organization.
+
 ## authentication_failed
 
 The API key is missing, revoked, expired, or malformed.
@@ -69,13 +71,13 @@ You reused an idempotency key with a different request body within the 24-hour w
 }
 ```
 
-**Fix:** Generate a new key per distinct operation, or wait for the key to expire. See [Creating events](../guides/creating-events#idempotency).
+**Fix:** Generate a new key per distinct operation, or wait for the key to expire. See [Creating events guide § Idempotency](../guides/creating-events#idempotency).
 
 ## webhook_signature_invalid
 
 Your handler rejected a delivery because signature verification failed. Harbor logs this on the delivery attempt, not as an API error response to your outbound calls.
 
-**Fix:** Verify against the **endpoint secret**, not the API key. Use the raw request body before JSON parsing. Reject timestamps older than five minutes. Details in [Webhooks](../guides/webhooks).
+**Fix:** Verify against the **endpoint secret**, not the API key. Use the raw request body before JSON parsing. Reject timestamps older than five minutes. Details in [Webhooks guide](../guides/webhooks).
 
 ## invalid_request (pagination)
 
@@ -89,7 +91,7 @@ Your handler rejected a delivery because signature verification failed. Harbor l
 }
 ```
 
-**Fix:** Do not reuse cursors older than 24 hours. See [Pagination](../guides/pagination).
+**Fix:** Do not reuse cursors older than 24 hours. See [Pagination guide](../guides/pagination).
 
 ## workspace_suspended
 
@@ -109,6 +111,4 @@ Writes and deliveries pause when a workspace is suspended (billing or policy).
 
 ## Next steps
 
-- [Rate limits](./rate-limits) for `rate_limit_exceeded`
-- [Client reference](../sdk-reference/client) for retry configuration
-- [Webhook delivery](../concepts/webhook-delivery) for delivery-side debugging
+See [Rate limits](./rate-limits) for `rate_limit_exceeded`. SDK retry options in [Client](../sdk-reference/client).

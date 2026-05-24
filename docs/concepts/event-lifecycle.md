@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 description: How events are created, stored, and delivered on Harbor.
+pagination_prev: getting-started/quickstart
+pagination_next: guides/creating-events
 ---
 
 # Event lifecycle
@@ -18,34 +20,32 @@ sequenceDiagram
 
     Service->>Harbor: POST /v1/events
     Harbor->>Store: Persist event
-    Harbor-->>Service: 201 Created (evt_01hzy9q7x8f4)
+    Harbor-->>Service: 201 Created (evt_02m4k9p1q7w3)
     Harbor->>Hook: POST signed delivery
     Hook-->>Harbor: 2xx response
 ```
 
-Events are write-once. You cannot update or delete an event through the public API. If you need to correct data, emit a compensating event (for example, `invoice.voided` after `invoice.paid`).
+Events are write-once. You cannot update or delete an event through the public API. If you need to correct data, emit a compensating event (for example, `order.cancelled` after `order.shipped`).
 
 ## Event anatomy
 
 | Field | Example | Notes |
 | ----- | ------- | ----- |
-| `id` | `evt_01hzy9q7x8f4` | Stable identifier for retrieval and idempotency |
-| `type` | `invoice.paid` | Dot-separated name your consumers subscribe to |
+| `id` | `evt_02m4k9p1q7w3` | Stable identifier for retrieval and idempotency |
+| `type` | `order.shipped` | Dot-separated name your consumers subscribe to |
 | `workspaceId` | `ws_018f3a2e4b9c` | Isolation boundary for keys and webhooks |
 | `payload` | `{ "invoiceId": "inv_..." }` | JSON object, max 256 KB |
 | `createdAt` | `2026-05-25T12:00:00Z` | Set by Harbor at creation time |
 
 ## Idempotency and duplicates
 
-Network retries can submit the same `POST` twice. Pass an `Idempotency-Key` header (REST) or `idempotencyKey` option (SDK) so Harbor returns the original event instead of creating a duplicate.
-
-Idempotency keys expire after 24 hours. After that window, the same key creates a new event.
+Network retries can submit the same `POST` twice. Pass an `Idempotency-Key` header (REST) or `idempotencyKey` option (SDK) so Harbor returns the original event instead of creating a duplicate. See [Creating events guide § Idempotency](../guides/creating-events#idempotency) for examples and the 24-hour expiry window.
 
 ## Event replay
 
 Replay is useful when a downstream consumer missed events during an outage. Harbor does not mutate historical events. Instead:
 
-1. List events from a known cursor or timestamp using [Pagination](../guides/pagination).
+1. List events from a known cursor or timestamp using [Pagination guide](../guides/pagination).
 2. Re-process payloads in your consumer.
 3. For webhook-only integrations, use the dashboard **Webhooks → Deliveries → Replay** on a failed delivery.
 
@@ -55,6 +55,4 @@ Replay from the dashboard re-sends the same signed payload to your endpoint. You
 
 ## Next steps
 
-- [Creating events](../guides/creating-events) with SDK and cURL examples
-- [Webhook delivery](./webhook-delivery) for the outbound notification flow
-- [Events SDK reference](../sdk-reference/events) for method details
+Continue to [Creating events](../guides/creating-events). Method details in [Events (SDK reference)](../sdk-reference/events).

@@ -7,7 +7,7 @@ description: Base URLs, authentication, and request conventions for the Harbor R
 
 Harbor exposes a JSON REST API for workspaces, events, and webhooks. Use it directly when the Node.js SDK is not available or for quick debugging with cURL.
 
-The SDK is recommended for application code. It handles pagination cursors, retries, and typed errors. See the [Client reference](../sdk-reference/client).
+The SDK is recommended for application code. It handles pagination cursors, retries, and typed errors. See [Client (SDK reference)](../sdk-reference/client).
 
 ## Base URLs
 
@@ -16,15 +16,15 @@ The SDK is recommended for application code. It handles pagination cursors, retr
 | Production | `https://api.harbor.dev/v1` |
 | Sandbox | `https://sandbox.api.harbor.dev/v1` |
 
-Sandbox and production data are isolated. Use `hb_test_` keys against sandbox.
+Sandbox and production data are isolated. Use `hb_test_` keys against sandbox. Production uses `api.harbor.dev` and `hb_live_` keys.
 
 ## Authentication
 
-Send your secret key as a Bearer token:
+Send your API key as a Bearer token:
 
 ```bash
-curl https://api.harbor.dev/v1/workspaces/ws_018f3a2e4b9c \
-  -H "Authorization: Bearer hb_live_xxxx"
+curl https://sandbox.api.harbor.dev/v1/workspaces/ws_018f3a2e4b9c \
+  -H "Authorization: Bearer hb_test_xxxx"
 ```
 
 Restricted keys work the same way. Harbor enforces scopes server-side. See [Managing API keys](../guides/managing-api-keys).
@@ -49,11 +49,11 @@ List endpoints return:
 {
   "data": [ ... ],
   "has_more": true,
-  "end_cursor": "evt_01hzy9q7x8f4"
+  "end_cursor": "evt_02m4k9p1q7w3"
 }
 ```
 
-Pass `?starting_after={end_cursor}` on the next request. Details in [Pagination](../guides/pagination).
+Pass `?starting_after={end_cursor}` on the next request. Details in [Pagination guide](../guides/pagination).
 
 ## Errors
 
@@ -85,6 +85,4 @@ Task-oriented examples live in [Guides](../guides/creating-events). Interactive 
 
 ## Next steps
 
-- [Creating events](../guides/creating-events) with cURL tab examples
-- [Rate limits](../troubleshooting/rate-limits) and response headers
-- [Quickstart](../getting-started/quickstart) to compare SDK and raw HTTP workflows
+See [Creating events guide](../guides/creating-events) for cURL examples. Rate limit headers in [Rate limits](../troubleshooting/rate-limits).

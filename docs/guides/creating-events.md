@@ -1,13 +1,15 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 description: Create and retrieve events in a Harbor workspace.
+pagination_prev: concepts/event-lifecycle
+pagination_next: concepts/webhook-delivery
 ---
 
 # Creating events
 
 Events record activity inside a workspace. Each event has a type string (for example, `invoice.paid`) and a JSON payload. Events are immutable after creation.
 
-You need a secret key with the `events:write` scope. See [Event lifecycle](../concepts/event-lifecycle) for how events flow to webhooks.
+You need an API key with the `events:write` scope. See [Event lifecycle](../concepts/event-lifecycle) for how events flow to webhooks.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -56,9 +58,9 @@ console.log(event.id);
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl https://api.harbor.dev/v1/events \
+curl https://sandbox.api.harbor.dev/v1/events \
   -X POST \
-  -H "Authorization: Bearer hb_live_xxxx" \
+  -H "Authorization: Bearer hb_test_xxxx" \
   -H "Content-Type: application/json" \
   -H "Idempotency-Key: inv_0192ac4e8b1d-paid" \
   -d '{
@@ -119,7 +121,7 @@ Use retrieval to confirm persistence after a write or to audit payload contents 
 
 ## Backfill and replay
 
-If a downstream system missed events, list from a cursor and re-process payloads locally. For webhook-only setups, replay individual deliveries from the dashboard. See [Event lifecycle](../concepts/event-lifecycle#event-replay).
+If a downstream system missed events, see [Event lifecycle § Event replay](../concepts/event-lifecycle#event-replay).
 
 :::tip
 Event types are plain strings. Document your team's naming convention (for example, `resource.action`) so webhook filters stay predictable.
@@ -134,7 +136,4 @@ Event types are plain strings. Document your team's naming convention (for examp
 
 ## Next steps
 
-- [Webhook delivery](../concepts/webhook-delivery) for what happens after creation
-- [Pagination](./pagination) when listing events across large workspaces
-- [Webhooks](./webhooks) to notify external systems
-- [Events SDK reference](../sdk-reference/events) for method signatures
+Continue to [Webhook delivery](../concepts/webhook-delivery). Method signatures in [Events (SDK reference)](../sdk-reference/events).

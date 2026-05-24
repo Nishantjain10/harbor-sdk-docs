@@ -3,6 +3,6 @@
   "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "Core platform behavior for events and webhook delivery."
+    "description": "How events and webhook deliveries work on Harbor."
   }
 }

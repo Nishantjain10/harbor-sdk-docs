@@ -1,8 +1,8 @@
 {
   "label": "Guides",
-  "position": 3,
+  "position": 4,
   "link": {
     "type": "generated-index",
-    "description": "Task-oriented walkthroughs for common Harbor integrations."
+    "description": "Task-oriented walkthroughs for events, webhooks, credentials, and pagination."
   }
 }

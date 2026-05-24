@@ -4,6 +4,8 @@ Developer documentation for **Harbor**, a fictional event routing platform. Harb
 
 Harbor is not a real product. The content is realistic enough to show how I would structure and maintain SDK documentation.
 
+<img width="2534" height="1554" alt="Harbor Docs site preview" src="https://github.com/user-attachments/assets/7a76ef5e-942c-48cf-808e-6956390db8ac" />
+
 ## Local setup
 
 Requires Node.js 20 (`nvm use` reads `.nvmrc`).
@@ -50,3 +52,9 @@ External link checking (lychee), OpenAPI-generated API reference, Algolia search
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for where to edit files and what to run before a PR.
+
+---
+
+<p align="center">
+  Built with care by <strong>Nishant</strong>
+</p>

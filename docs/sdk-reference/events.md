@@ -47,11 +47,11 @@ harbor.events.list({
 
 **Required scope:** `events:read`
 
-For iterator-based paging, use `listAuto`. See [Pagination](../guides/pagination).
+For iterator-based paging, use `listAuto`. See [Pagination guide](../guides/pagination).
 
-## replay considerations
+## Replay
 
-`retrieve` returns the canonical payload for an event ID. Use it to verify content before reprocessing during a backfill. Harbor does not expose a `replay` method on the SDK; webhook replay is a dashboard action. See [Event lifecycle](../concepts/event-lifecycle#event-replay).
+The SDK does not expose a `replay` method. Use `retrieve` to fetch the canonical payload for an event ID before reprocessing during a backfill. Webhook replay is a dashboard action. See [Event lifecycle § Event replay](../concepts/event-lifecycle#event-replay).
 
 ## Event object
 
@@ -65,7 +65,4 @@ For iterator-based paging, use `listAuto`. See [Pagination](../guides/pagination
 
 ## Next steps
 
-- [Event lifecycle](../concepts/event-lifecycle) for idempotency and replay
-- [Creating events](../guides/creating-events) walkthrough with REST examples
-- [Webhooks](../guides/webhooks) to react to new events
-- [Common errors](../troubleshooting/common-errors) for `resource_not_found` on bad event IDs
+See [Creating events guide](../guides/creating-events) for a full walkthrough. Idempotency details in [Event lifecycle](../concepts/event-lifecycle).

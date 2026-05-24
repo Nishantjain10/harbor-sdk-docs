@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 description: Install @harbor/sdk and verify your local environment.
+pagination_prev: intro
+pagination_next: getting-started/quickstart
 ---
 
 # Installation
@@ -36,31 +38,23 @@ npm install @harbor/sdk
 yarn add @harbor/sdk
 ```
 
-## Scaffold project files
-
-For a new integration, the CLI can generate a starter config and environment template:
-
-```bash
-npx @harbor/sdk init --typescript
-```
-
-This creates `harbor.config.ts`, adds `.env.example`, and enables strict TypeScript settings. For a JavaScript project, omit the flag:
-
-```bash
-npx @harbor/sdk init
-```
-
 ## Verify the install
 
-Print the installed SDK version:
+Import the client in a one-line check:
+
+```typescript
+import { Harbor } from '@harbor/sdk';
+console.log(typeof Harbor); // 'function'
+```
+
+Or print the installed version:
 
 ```bash
 node -e "console.log(require('@harbor/sdk/package.json').version)"
 ```
 
-You should see a semver such as `2.1.0`. Continue to [Quickstart](./quickstart) to configure credentials and send a request.
+You should see a semver such as `2.1.0`. Continue to [Quickstart](./quickstart) to configure credentials and send your first event.
 
 ## Next steps
 
-- [Quickstart](./quickstart) to list events from a workspace
-- [Managing API keys](../guides/managing-api-keys) before deploying to production
+Continue to [Quickstart](./quickstart) to create and confirm your first event.

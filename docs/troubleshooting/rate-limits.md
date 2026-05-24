@@ -64,6 +64,4 @@ Tight loops that list every event without `listAuto` can exhaust quota quickly. 
 
 ## Next steps
 
-- [Pagination](../guides/pagination) to reduce list call volume
-- [Common errors](./common-errors) for other failure codes
-- [Creating events](../guides/creating-events) with idempotency keys for safe retries
+See [Pagination guide](../guides/pagination) to reduce list call volume. Other failure codes in [Common errors](./common-errors).

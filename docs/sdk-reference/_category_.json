@@ -1,6 +1,6 @@
 {
   "label": "SDK reference",
-  "position": 4,
+  "position": 5,
   "link": {
     "type": "generated-index",
     "description": "Client configuration and resource methods for Harbor SDK v2."

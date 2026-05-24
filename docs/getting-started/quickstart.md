@@ -1,15 +1,25 @@
 ---
 sidebar_position: 2
-description: Configure the Harbor client and list events from a workspace.
+description: Configure the Harbor client, create an event, and confirm it was persisted.
+pagination_prev: getting-started/installation
+pagination_next: concepts/event-lifecycle
 ---
 
 # Quickstart
 
-This guide initializes the Harbor client and retrieves recent events from a workspace. You need a secret API key with the `events:read` scope.
+This guide creates an event in a workspace and confirms it was persisted. You need an API key with the `events:write` and `events:read` scopes.
 
-## Create a client
+## Before you code
 
-Create `list-events.ts`:
+1. Create a sandbox API key in the Harbor dashboard (**Settings → API keys**, `hb_test_` prefix, scopes `events:write` and `events:read`).
+2. Copy your workspace ID from **Settings → General** (starts with `ws_`).
+3. Export the key: `export HARBOR_SECRET_KEY=hb_test_…`
+4. Install the SDK: `pnpm add @harbor/sdk` (see [Installation](./installation)).
+5. Run the example below.
+
+## Create and confirm an event
+
+Create `emit-event.ts`:
 
 ```typescript
 import { Harbor } from '@harbor/sdk';
@@ -18,14 +28,19 @@ const harbor = new Harbor({
   secretKey: process.env.HARBOR_SECRET_KEY,
 });
 
-const events = await harbor.events.list({
+const created = await harbor.events.create({
   workspaceId: 'ws_018f3a2e4b9c',
-  limit: 5,
+  type: 'order.shipped',
+  payload: {
+    orderId: 'ord_0192be7a3c4f',
+    carrier: 'ups',
+  },
 });
 
-for (const event of events.data) {
-  console.log(event.id, event.type);
-}
+console.log('Created:', created.id);
+
+const confirmed = await harbor.events.retrieve(created.id);
+console.log('Confirmed:', confirmed.type, confirmed.createdAt);
 ```
 
 Load `HARBOR_SECRET_KEY` from your environment. Do not commit keys to source control.
@@ -33,8 +48,10 @@ Load `HARBOR_SECRET_KEY` from your environment. Do not commit keys to source con
 Run the script:
 
 ```bash
-npx tsx list-events.ts
+npx tsx emit-event.ts
 ```
+
+You should see the same event ID in both log lines. Harbor routes matching events to subscribed webhook endpoints asynchronously.
 
 ## Handle errors
 
@@ -44,7 +61,11 @@ Failed requests throw a `HarborError` with a stable `code` field:
 import { Harbor, isHarborError } from '@harbor/sdk';
 
 try {
-  await harbor.events.list({ workspaceId: 'ws_018f3a2e4b9c' });
+  await harbor.events.create({
+    workspaceId: 'ws_018f3a2e4b9c',
+    type: 'order.shipped',
+    payload: { orderId: 'ord_0192be7a3c4f', carrier: 'ups' },
+  });
 } catch (error) {
   if (isHarborError(error)) {
     console.error(error.code, error.message);
@@ -61,7 +82,7 @@ See [Common errors](../troubleshooting/common-errors) for response examples and 
 
 ## Test against sandbox
 
-Point the client at Harbor's sandbox host while developing:
+The SDK selects the sandbox host automatically when your key uses the `hb_test_` prefix. Override explicitly if needed:
 
 ```typescript
 const harbor = new Harbor({
@@ -74,7 +95,4 @@ Sandbox keys use the `hb_test_` prefix. Production keys use `hb_live_`.
 
 ## Next steps
 
-- [Event lifecycle](../concepts/event-lifecycle) to understand what you are listing
-- [Managing API keys](../guides/managing-api-keys) for scopes and rotation
-- [Creating events](../guides/creating-events) to write your first event
-- [Client reference](../sdk-reference/client) for configuration options
+Continue to [Event lifecycle](../concepts/event-lifecycle). For REST/cURL examples, see [Creating events](../guides/creating-events).

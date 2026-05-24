@@ -73,7 +73,4 @@ When syncing to a data warehouse, persist `endCursor` after each successful page
 
 ## Next steps
 
-- [Event lifecycle](../concepts/event-lifecycle) for how list results relate to deliveries
-- [Events reference](../sdk-reference/events) for list method options
-- [Rate limits](../troubleshooting/rate-limits) when iterating large datasets
-- [Creating events](./creating-events) before listing newly written records
+See [Events (SDK reference)](../sdk-reference/events) for list options. Watch [Rate limits](../troubleshooting/rate-limits) when iterating large datasets.
