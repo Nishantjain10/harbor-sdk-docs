@@ -1,3 +1,7 @@
+# Only check outbound http(s) links. Internal doc links are validated by
+# `docusaurus build` via onBrokenLinks.
+scheme = ["http", "https"]
+
 # Skip illustrative URLs in code samples and local dev references.
 exclude = [
   '^https://api\\.harbor\\.dev',
