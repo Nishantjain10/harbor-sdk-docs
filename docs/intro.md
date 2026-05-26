@@ -1,16 +1,15 @@
 ---
 sidebar_position: 1
-slug: /
 description: Harbor SDK documentation for workspaces, events, webhooks, and API keys.
 ---
 
-# Harbor SDK
+# Platform overview
 
 Harbor is an **event routing platform** for **workspaces**, **events**, and **outbound webhooks**. You emit events from your backend, Harbor persists them, and subscribed HTTPS endpoints receive signed deliveries.
 
 The `@harbor/sdk` package wraps the REST API for Node.js with typed clients, cursor pagination, and retry handling.
 
-## Platform overview
+## Core resources
 
 | Resource | Purpose |
 | -------- | ------- |

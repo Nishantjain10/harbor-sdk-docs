@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Lint and build
+    name: Quality checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,5 +35,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        id: chrome
+
       - name: Verify docs site
         run: pnpm check
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+
+  link-check:
+    name: External links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check external links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --config .lychee.toml --no-progress 'docs/**/*.md' 'versioned_docs/**/*.md' 'README.md' 'CONTRIBUTING.md'

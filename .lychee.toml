@@ -1,0 +1,21 @@
+# Only check outbound http(s) links. Internal doc links are validated by
+# `docusaurus build` via onBrokenLinks.
+scheme = ["http", "https"]
+
+# Skip illustrative URLs in code samples and local dev references.
+exclude = [
+  '^https://api\\.harbor\\.dev',
+  '^https://sandbox\\.api\\.harbor\\.dev',
+  '^https://api\\.example\\.com',
+  '^https://.*\\.ngrok\\.io',
+  '^http://localhost',
+  '^https://github\\.com/your-org/',
+]
+
+# Example API hosts are fictional; real docs links should still resolve.
+max_concurrency = 4
+retry_wait_time = 2
+max_retries = 2
+
+# Treat redirects as success for stable documentation links.
+accept = ['200..=299', '429']

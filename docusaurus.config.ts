@@ -59,6 +59,11 @@ const config: Config = {
       title: 'Harbor Docs',
       items: [
         {
+          to: '/get-started',
+          label: 'Get started',
+          position: 'left',
+        },
+        {
           to: '/guides',
           label: 'Guides',
           position: 'left',

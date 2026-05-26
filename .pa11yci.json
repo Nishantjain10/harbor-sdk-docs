@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "runners": ["axe"],
+    "timeout": 30000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-dev-shm-usage"]
+    },
+    "hideElements": ".theme-doc-version-badge, .mermaid, .home-diagram, svg.flowchart, svg[id^=\"mermaid-svg-\"]",
+    "ignore": ["color-contrast"]
+  }
+}
