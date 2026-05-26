@@ -35,8 +35,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        id: chrome
+
       - name: Verify docs site
         run: pnpm check
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
 
   link-check:
     name: External links
