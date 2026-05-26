@@ -153,7 +153,7 @@ export default function Home() {
               them in a workspace and delivers signed payloads to subscribed webhook
               endpoints.
             </p>
-            <div className={styles.diagramWrapper}>
+            <div className={clsx(styles.diagramWrapper, 'home-diagram')}>
               <Mermaid value={platformFlow} />
             </div>
             <p className={styles.sectionFooter}>
