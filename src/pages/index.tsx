@@ -25,11 +25,11 @@ const features = [
   {
     title: 'Typed Node.js SDK',
     description:
-      'Cursor pagination, typed errors, and retry helpers for server-side integrations.',
+      'Cursor pagination, typed errors, and retry helpers for server-side integrations and API calls.',
     link: '/sdk-reference/client',
   },
   {
-    title: 'Event delivery + retries',
+    title: 'Event delivery + retries, idempotency, and webhook verification',
     description:
       'Persist events in a workspace and deliver matching payloads to HTTPS endpoints.',
     link: '/concepts/webhook-delivery',
